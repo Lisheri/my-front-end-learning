@@ -10,5 +10,8 @@
     "vuepress": "1.8.2",
     "vuepress-theme-reco": "1.6.6"
   },
-  "description": "gogogo"
+  "description": "gogogo",
+  "dependencies": {
+    "@vuepress-reco/vuepress-plugin-comments": "^1.6.0"
+  }
 }
