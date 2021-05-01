@@ -2,6 +2,7 @@ module.exports = {
   "title": "小莫的博客",
   "description": "冲",
   "dest": "public",
+  "base": "/my-front-end-learning/",
   "head": [
     [
       "link",
