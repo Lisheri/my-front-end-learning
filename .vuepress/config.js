@@ -120,7 +120,7 @@ module.exports = {
       "/blogs/part6/": [
         {
           title: "前端工程化",
-          collapsable: false,
+          collapsable: true,
           children: [
             "first/1", 
             "first/2", 
@@ -143,7 +143,15 @@ module.exports = {
           children: [
             "third/1", 
             "third/2", 
-            "third/3"
+            {
+              title: "gulp",
+              collapsable: true,
+              children: [
+                "third/gulp/1",
+                "third/gulp/2",
+                "third/gulp/3",
+              ]
+            }
           ]
         }
       ]
