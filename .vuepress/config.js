@@ -150,6 +150,15 @@ module.exports = {
                 "third/gulp/1",
                 "third/gulp/2",
                 "third/gulp/3",
+                "third/gulp/4",
+                "third/gulp/5"
+              ]
+            },
+            {
+              title: "封装自动化构建工作流",
+              collapsable: true,
+              children: [
+                "third/gulp/6",
               ]
             }
           ]
