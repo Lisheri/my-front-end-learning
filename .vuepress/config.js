@@ -21,7 +21,7 @@ module.exports = {
   ],
   "theme": "reco",
   "themeConfig": {
-    "mode": 'light', // 默认 auto，auto 跟随系统，dark 暗色模式，light 亮色模式
+    "mode": 'dark', // 默认 auto，auto 跟随系统，dark 暗色模式，light 亮色模式
     "modePicker": true, // 默认 true，false 不显示模式调节按钮，true 则显示
     "subSidebar": "auto",
     "valineConfig": {
@@ -56,6 +56,11 @@ module.exports = {
           {
             "text": "GitHub",
             "link": "https://github.com/recoluan",
+            "icon": "reco-github"
+          },
+          {
+            "text": "myGitHub",
+            "link": "https://github.com/Lisheri",
             "icon": "reco-github"
           }
         ]
@@ -151,7 +156,7 @@ module.exports = {
                 "third/gulp/2",
                 "third/gulp/3",
                 "third/gulp/4",
-                "third/gulp/5"
+                "third/gulp/5",
               ]
             },
             {
@@ -159,6 +164,7 @@ module.exports = {
               collapsable: true,
               children: [
                 "third/gulp/6",
+                "third/gulp/7"
               ]
             }
           ]
@@ -188,7 +194,7 @@ module.exports = {
         "desc": "A simple and beautiful vuepress Blog & Doc theme.",
         "avatar": "https://vuepress-theme-reco.recoluan.com/icon_vuepress_reco.png",
         "link": "https://vuepress-theme-reco.recoluan.com"
-      }
+      },
     ],
     "logo": "/logo.png",
     "search": true,
