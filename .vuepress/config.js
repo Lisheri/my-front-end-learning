@@ -166,6 +166,14 @@ module.exports = {
                 "third/gulp/6",
                 "third/gulp/7"
               ]
+            },
+            {
+              title: "FIS上手",
+              collapsable: true,
+              children: [
+                "third/FIS/1",
+                "third/FIS/2"
+              ]
             }
           ]
         }
