@@ -177,6 +177,24 @@ module.exports = {
             }
           ]
         }
+      ],
+      "/blogs/ModularDevelopment/": [
+        {
+          title: "模块化开发",
+          collapsable: true,
+          children: [
+            "1", 
+            "2", 
+            "3"
+          ]
+        },
+        {
+          title: "webpack打包",
+          collapsable: true,
+          children: [
+            "WebpackStudy/1"
+          ]
+        }
       ]
     },
     "type": "blog",
