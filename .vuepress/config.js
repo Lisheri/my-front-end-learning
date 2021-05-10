@@ -192,7 +192,8 @@ module.exports = {
           title: "webpack打包",
           collapsable: true,
           children: [
-            "WebpackStudy/1"
+            "WebpackStudy/1",
+            "WebpackStudy/2"
           ]
         }
       ]
