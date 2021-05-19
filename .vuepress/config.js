@@ -209,6 +209,20 @@ module.exports = {
           children: [
             "Rollup/1",
           ]
+        },
+        {
+          title: "Parcel上手",
+          collapsable: true,
+          children: [
+            "parcel/1"
+          ]
+        },
+        {
+          title: "规范化标准",
+          collapsable: true,
+          children: [
+            "eslint/1"
+          ]
         }
       ]
     },
