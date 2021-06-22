@@ -201,6 +201,7 @@ module.exports = {
             "WebpackStudy/7",
             "WebpackStudy/8",
             "WebpackStudy/9",
+            "WebpackStudy/10",
           ]
         },
         {
@@ -222,6 +223,13 @@ module.exports = {
           collapsable: true,
           children: [
             "eslint/1"
+          ]
+        },
+        {
+          title: "webpack源码阅读",
+          collapsable: true,
+          children: [
+            "webpackSource/1"
           ]
         }
       ]
