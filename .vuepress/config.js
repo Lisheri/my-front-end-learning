@@ -229,7 +229,8 @@ module.exports = {
           title: "webpack源码阅读",
           collapsable: true,
           children: [
-            "webpackSource/1"
+            "webpackSource/1",
+            "webpackSource/2"
           ]
         }
       ]
