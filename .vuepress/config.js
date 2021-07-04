@@ -232,7 +232,7 @@ module.exports = {
             "webpackSource/1",
             "webpackSource/2",
             "webpackSource/3",
-            "webpackSource/4"，
+            "webpackSource/4",
             "webpackSource/5"
           ]
         }
