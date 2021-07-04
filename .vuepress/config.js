@@ -230,7 +230,10 @@ module.exports = {
           collapsable: true,
           children: [
             "webpackSource/1",
-            "webpackSource/2"
+            "webpackSource/2",
+            "webpackSource/3",
+            "webpackSource/4"，
+            "webpackSource/5"
           ]
         }
       ]
