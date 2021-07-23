@@ -233,7 +233,8 @@ module.exports = {
             "webpackSource/2",
             "webpackSource/3",
             "webpackSource/4",
-            "webpackSource/5"
+            "webpackSource/5",
+            "webpackSource/6"
           ]
         }
       ]
