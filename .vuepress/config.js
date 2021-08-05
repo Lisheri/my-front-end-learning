@@ -237,7 +237,8 @@ module.exports = {
             "webpackSource/6",
             "webpackSource/7",
             "webpackSource/8",
-            "webpackSource/9"
+            "webpackSource/9",
+            "webpackSource/10"
           ]
         }
       ]
