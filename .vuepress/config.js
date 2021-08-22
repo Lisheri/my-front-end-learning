@@ -246,6 +246,9 @@ module.exports = {
             "webpackSource/15",
             "webpackSource/16",
             "webpackSource/17",
+            "webpackSource/18",
+            "webpackSource/19",
+            "webpackSource/20",
           ]
         }
       ]
