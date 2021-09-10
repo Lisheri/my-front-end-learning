@@ -251,6 +251,22 @@ module.exports = {
             "webpackSource/20",
           ]
         }
+      ],
+      "/blogs/vue/": [
+        {
+          title: 'vue基础',
+          collapsable: false,
+          children: [
+            "base/1"
+          ]
+        },
+        {
+          title: 'vue-router',
+          collapsable: false,
+          children: [
+            "vue-router/1"
+          ]
+        }
       ]
     },
     "type": "blog",
