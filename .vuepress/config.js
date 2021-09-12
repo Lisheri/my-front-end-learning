@@ -264,7 +264,8 @@ module.exports = {
           title: 'vue-router',
           collapsable: false,
           children: [
-            "vue-router/1"
+            "vue-router/1",
+            "vue-router/2",
           ]
         }
       ]
