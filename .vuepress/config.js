@@ -267,6 +267,14 @@ module.exports = {
             "vue-router/1",
             "vue-router/2",
           ]
+        },
+        {
+          title: 'vue响应式原理',
+          collapsable: false,
+          children: [
+            'vue-responsive/1',
+            'vue-responsive/2'
+          ]
         }
       ]
     },
