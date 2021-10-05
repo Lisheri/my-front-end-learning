@@ -273,7 +273,9 @@ module.exports = {
           collapsable: false,
           children: [
             'vue-responsive/1',
-            'vue-responsive/2'
+            'vue-responsive/2',
+            'vue-responsive/3',
+            'vue-responsive/4',
           ]
         }
       ]
