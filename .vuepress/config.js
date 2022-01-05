@@ -277,6 +277,40 @@ module.exports = {
             'vue-responsive/3',
             'vue-responsive/4',
           ]
+        },
+        {
+          title: 'virtualDOM',
+          collapsable: false,
+          children: [
+            'vue-virtualDOM/1',
+            'vue-virtualDOM/2',
+            'vue-virtualDOM/3',
+          ]
+        }
+      ],
+      "/blogs/miniprogream/": [
+        {
+          title: '小程序',
+          collapsable: false,
+          children: [
+            "wechat/1"
+          ]
+        },
+        // {
+        //   title: 'uniapp',
+        //   collapsable: false,
+        //   children: [
+
+        //   ]
+        // }
+      ],
+      "/blogs/microFront/": [
+        {
+          title: '微前端基础',
+          collapsable: false,
+          children: [
+            'base/1'
+          ]
         }
       ]
     },
