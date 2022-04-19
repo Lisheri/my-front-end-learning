@@ -287,6 +287,7 @@ module.exports = {
             'vue-virtualDOM/3',
             'vue-virtualDOM/4',
             'vue-virtualDOM/5',
+            'vue-virtualDOM/6',
           ]
         }
       ],
