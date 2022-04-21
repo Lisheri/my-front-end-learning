@@ -290,26 +290,14 @@ module.exports = {
             'vue-virtualDOM/6',
           ]
         },
-        {
-          title: 'vue源码解析',
-          collapsable: false,
-          children: [
-            {
-              title: "vue响应式原理",
-              collapsable: true,
-              children: [
-                "vue-resouce/1",
-              ]
-            },
-          ]
-        },
       ],
       "/blogs/vue-resource/": [
         {
           title: 'vue响应式原理',
           collapsable: false,
           children: [
-            'responsive/1'
+            'responsive/1',
+            'responsive/2'
           ]
         },
       ],
