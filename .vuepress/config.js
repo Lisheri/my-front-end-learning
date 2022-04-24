@@ -297,7 +297,8 @@ module.exports = {
           collapsable: false,
           children: [
             'responsive/1',
-            'responsive/2'
+            'responsive/2',
+            'responsive/3'
           ]
         },
       ],
