@@ -298,7 +298,8 @@ module.exports = {
           children: [
             'responsive/1',
             'responsive/2',
-            'responsive/3'
+            'responsive/3',
+            'responsive/4',
           ]
         },
       ],
@@ -327,6 +328,13 @@ module.exports = {
             'base/2',
             'base/3',
             'base/4'
+          ]
+        },
+        {
+          title: 'qiankun',
+          collapsable: false,
+          children: [
+            'qiankun/1',
           ]
         }
       ]
