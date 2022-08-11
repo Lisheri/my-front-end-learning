@@ -300,6 +300,7 @@ module.exports = {
             'responsive/2',
             'responsive/3',
             'responsive/4',
+            'responsive/5',
           ]
         },
       ],
