@@ -1,7 +1,7 @@
 ---
 home: true
 heroText: 学习新技术、新框架，关注前端自动化、工程化、前端架构
-tagline: 学习, 不停学习, 继续学习, 深入学习
+tagline: 好好写代码, 好好卷
 # heroImage: /hero.png
 # heroImageStyle: {
 #   maxWidth: '600px',
