@@ -309,6 +309,9 @@ module.exports = {
             'responsive/11',
             'responsive/12',
             'responsive/13',
+            'responsive/14',
+            'responsive/15',
+            'responsive/16',
           ]
         },
       ],
