@@ -321,6 +321,7 @@ module.exports = {
           children: [
             'virtualDOM/1',
             'virtualDOM/2',
+            'virtualDOM/3',
           ]
         }
       ],
