@@ -294,7 +294,7 @@ module.exports = {
       "/blogs/vue-resource/": [
         {
           title: 'vue响应式原理',
-          collapsable: false,
+          collapsable: true,
           children: [
             'responsive/1',
             'responsive/2',
@@ -315,6 +315,14 @@ module.exports = {
             'responsive/17',
           ]
         },
+        {
+          title: 'vue虚拟DOM原理',
+          collapsable: true,
+          children: [
+            'virtualDOM/1',
+            'virtualDOM/2',
+          ]
+        }
       ],
       "/blogs/miniprogream/": [
         {
