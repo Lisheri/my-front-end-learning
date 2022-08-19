@@ -323,6 +323,8 @@ module.exports = {
             'virtualDOM/2',
             'virtualDOM/3',
             'virtualDOM/4',
+            'virtualDOM/5',
+            'virtualDOM/6',
           ]
         }
       ],
