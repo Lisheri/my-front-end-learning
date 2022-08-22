@@ -331,6 +331,15 @@ module.exports = {
             'virtualDOM/10',
             'virtualDOM/11',
           ]
+        },
+        {
+          title: 'vue模板编译原理',
+          collapsable: true,
+          children: [
+            'templateCompile/1',
+            'templateCompile/2',
+            'templateCompile/3',
+          ]
         }
       ],
       "/blogs/miniprogream/": [
