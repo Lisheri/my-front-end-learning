@@ -339,6 +339,9 @@ module.exports = {
             'templateCompile/1',
             'templateCompile/2',
             'templateCompile/3',
+            'templateCompile/4',
+            'templateCompile/5',
+            'templateCompile/6',
           ]
         }
       ],
