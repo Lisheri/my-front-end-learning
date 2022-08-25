@@ -342,6 +342,8 @@ module.exports = {
             'templateCompile/4',
             'templateCompile/5',
             'templateCompile/6',
+            'templateCompile/7',
+            'templateCompile/8',
           ]
         }
       ],
