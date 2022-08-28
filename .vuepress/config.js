@@ -344,6 +344,17 @@ module.exports = {
             'templateCompile/6',
             'templateCompile/7',
             'templateCompile/8',
+            'templateCompile/9',
+          ]
+        },
+        {
+          title: 'vue组件化',
+          collapsable: true,
+          children: [
+            'components/1',
+            'components/2',
+            'components/3',
+            'components/4',
           ]
         }
       ],
