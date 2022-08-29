@@ -358,6 +358,18 @@ module.exports = {
           ]
         }
       ],
+      "/blogs/VueStateManagement/": [
+        {
+          title: 'vue状态管理',
+          collapsable: false,
+          children: [
+            '1',
+            '2',
+            '3',
+            '4',
+          ]
+        }
+      ],
       "/blogs/miniprogream/": [
         {
           title: '小程序',
