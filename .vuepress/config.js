@@ -370,6 +370,16 @@ module.exports = {
           ]
         }
       ],
+      "/blogs/BaseSSR/": [
+        {
+          title: '服务端渲染基础',
+          collapsable: false,
+          children: [
+            '1',
+            '2'
+          ]
+        }
+      ],
       "/blogs/miniprogream/": [
         {
           title: '小程序',
