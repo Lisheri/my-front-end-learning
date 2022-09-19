@@ -379,7 +379,17 @@ module.exports = {
             '2',
             '3',
             '4',
-            '5'
+            '5',
+            '6'
+          ]
+        }
+      ],
+      "/blogs/vue3-resource/": [
+        {
+          title: 'vue3简介',
+          collapsable: false,
+          children: [
+            'introduction/1'
           ]
         }
       ],
