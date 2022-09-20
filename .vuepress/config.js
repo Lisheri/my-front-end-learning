@@ -391,6 +391,15 @@ module.exports = {
           children: [
             'introduction/1'
           ]
+        },
+        {
+          title: '核心组件实现',
+          collapsable: false,
+          children: [
+            'core/1',
+            'core/2',
+            'core/3'
+          ]
         }
       ],
       "/blogs/miniprogream/": [
