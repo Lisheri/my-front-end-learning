@@ -398,7 +398,8 @@ module.exports = {
           children: [
             'core/1',
             'core/2',
-            'core/3'
+            'core/3',
+            'core/4',
           ]
         }
       ],
