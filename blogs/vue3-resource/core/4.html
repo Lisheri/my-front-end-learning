@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Vue3组件渲染 - 完整的DOM Diff 流程(一) | 小莫的博客</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    <link rel="icon" href="/my-front-end-learning/favicon.ico">
+    <meta name="description" content="冲">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    
+    <link rel="preload" href="/my-front-end-learning/assets/css/0.styles.e6d2aca3.css" as="style"><link rel="preload" href="/my-front-end-learning/assets/js/app.07f8a982.js" as="script"><link rel="preload" href="/my-front-end-learning/assets/js/3.e7740265.js" as="script"><link rel="preload" href="/my-front-end-learning/assets/js/1.a4482675.js" as="script"><link rel="preload" href="/my-front-end-learning/assets/js/16.ad77a0b5.js" as="script"><link rel="prefetch" href="/my-front-end-learning/assets/js/10.a5d95dcd.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/100.68262140.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/101.8148ffc6.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/102.c914f7f9.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/103.bb18f7af.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/104.0cfe5f10.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/105.c7cbf001.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/106.956eee13.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/107.e704d456.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/108.2e059c62.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/109.a7dbe7e1.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/11.ea4312ec.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/110.9d53dc55.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/111.b1525884.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/112.4d2de9df.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/113.81cbac67.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/114.aac80b84.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/115.bc74e89d.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/116.2ad2e0b8.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/117.2601baae.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/118.8f3f022d.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/119.73c5bbc1.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/12.c1ea8fa2.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/120.1002219c.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/121.9a014a83.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/122.95ab6328.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/123.3e57ccc6.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/124.72f75824.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/125.9032038e.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/126.7b3150c1.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/127.2bf4a96e.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/128.2159858d.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/129.0eb87ea5.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/13.b029d8b7.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/130.bae60eb9.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/131.f6f6f4b3.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/132.ad8fbfeb.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/133.b0cbacf8.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/134.d9959194.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/135.daf49a7e.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/136.db1a5847.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/137.8bc38618.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/138.aadd0c25.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/139.a2e21b53.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/14.8ab26a4b.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/140.ea7989c5.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/141.6fad89e8.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/142.0fe7e9bd.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/143.ee470349.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/144.c44b5a71.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/145.38ea69b4.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/146.9f429afb.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/147.954b56ec.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/148.1d8220f5.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/149.e7a4a0b8.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/15.4603afc4.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/150.0d86e175.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/151.909e8ea6.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/152.ffc1854e.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/153.e2423c11.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/154.7d6ba879.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/155.01c48cde.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/156.519c354f.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/157.22756904.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/158.2d51cdc7.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/159.ca1a9631.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/160.bce74fea.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/161.2446dddc.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/162.476db91a.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/163.a6885836.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/164.84c8f074.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/165.60b0d413.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/166.054b141f.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/167.c942d0dd.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/168.460669e8.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/169.2ae1a94e.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/17.104ed00f.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/170.b142e626.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/171.a7f07b47.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/172.fde8cf51.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/173.f8dd4723.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/174.16f77d48.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/175.9bd76924.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/176.371882f5.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/177.95d2d90f.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/178.fd80b3c1.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/179.dc1f225a.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/18.3d378fa8.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/180.61ebaa39.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/181.07c46c01.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/182.b8b9c192.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/183.fdfcd1e5.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/184.65c2c39a.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/19.e4cc7502.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/20.74f7a35c.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/21.e1ac1bb2.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/22.bcee01ba.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/23.4cfb61d9.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/24.ddbfb368.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/25.57c01aba.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/26.761a4ce6.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/27.19999bac.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/28.164ff869.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/29.9d38b177.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/30.398b6fcf.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/31.8fbb33f1.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/32.d15436d7.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/33.5a1464ad.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/34.18ec8147.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/35.1276ee16.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/36.4c8b47ca.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/37.aff081d3.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/38.83ac2834.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/39.44d893ce.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/4.70ffed7a.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/40.4c35c9ff.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/41.cda69fbe.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/42.f943a55c.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/43.6481152e.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/44.842c9c41.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/45.94f5419a.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/46.76e2f530.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/47.65c476cb.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/48.48b91fa3.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/49.36183398.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/5.ab3b6ea4.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/50.7916da32.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/51.54aaf062.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/52.74d10ad6.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/53.e59f67ec.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/54.31018599.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/55.ffcdac3f.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/56.33e5871e.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/57.8bbc7368.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/58.f12ad20b.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/59.4875ef2c.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/6.278d543e.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/60.1a69e3d6.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/61.3a8ff5b6.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/62.b7af1498.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/63.75296dc3.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/64.e399044a.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/65.a0aa3be0.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/66.6172d441.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/67.ee6db858.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/68.f5e6637a.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/69.d267a6ef.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/7.443079a4.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/70.d595e498.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/71.e48a413a.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/72.09f976a0.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/73.4a2ef471.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/74.dba07c0b.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/75.a5217f11.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/76.7b87689e.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/77.79d1233e.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/78.e142e9f6.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/79.15469702.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/8.d88b091b.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/80.a9c79f62.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/81.fc865de1.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/82.4deb1bef.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/83.ddd55855.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/84.bea85c84.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/85.5b8340f4.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/86.ac06be3e.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/87.c2c71822.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/88.22bd42d7.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/89.1d8b6c3d.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/9.6e1d45b1.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/90.9494672a.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/91.35111e23.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/92.d117b399.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/93.aeb98e2b.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/94.c59e9400.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/95.9f630ef0.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/96.93b3410d.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/97.e0f7737f.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/98.78f1748b.js"><link rel="prefetch" href="/my-front-end-learning/assets/js/99.4f5a219d.js">
+    <link rel="stylesheet" href="/my-front-end-learning/assets/css/0.styles.e6d2aca3.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container" data-v-1156296a><div data-v-1156296a><div id="loader-wrapper" class="loading-wrapper" data-v-d48f4d20 data-v-1156296a data-v-1156296a><div class="loader-main" data-v-d48f4d20><div data-v-d48f4d20></div><div data-v-d48f4d20></div><div data-v-d48f4d20></div><div data-v-d48f4d20></div></div> <!----> <!----></div> <div class="password-shadow password-wrapper-out" style="display:none;" data-v-4e82dffc data-v-1156296a data-v-1156296a><h3 class="title" data-v-4e82dffc data-v-4e82dffc>小莫的博客</h3> <p class="description" data-v-4e82dffc data-v-4e82dffc>冲</p> <label id="box" class="inputBox" data-v-4e82dffc data-v-4e82dffc><input type="password" value="" data-v-4e82dffc> <span data-v-4e82dffc>Konck! Knock!</span> <button data-v-4e82dffc>OK</button></label> <div class="footer" data-v-4e82dffc data-v-4e82dffc><span data-v-4e82dffc><i class="iconfont reco-theme" data-v-4e82dffc></i> <a target="blank" href="https://vuepress-theme-reco.recoluan.com" data-v-4e82dffc>vuePress-theme-reco</a></span> <span data-v-4e82dffc><i class="iconfont reco-copyright" data-v-4e82dffc></i> <a data-v-4e82dffc><span data-v-4e82dffc>Lisher</span>
+            
+          <span data-v-4e82dffc>2021 - </span>
+          2022
+        </a></span></div></div> <div class="hide" data-v-1156296a><header class="navbar" data-v-1156296a><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/my-front-end-learning/" class="home-link router-link-active"><img src="/my-front-end-learning/logo.png" alt="小莫的博客" class="logo"> <span class="site-name">小莫的博客</span></a> <div class="links"><div class="color-picker"><a class="color-button"><i class="iconfont reco-color"></i></a> <div class="color-picker-menu" style="display:none;"><div class="mode-options"><h4 class="title">Choose mode</h4> <ul class="color-mode-options"><li class="dark">dark</li><li class="auto active">auto</li><li class="light">light</li></ul></div></div></div> <div class="search-box"><i class="iconfont reco-search"></i> <input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/my-front-end-learning/" class="nav-link"><i class="iconfont reco-home"></i>
+  主页
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="iconfont reco-category"></i>
+      目录
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/ssr基础/" class="nav-link"><i class="undefined"></i>
+  ssr基础
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/Gridsome/" class="nav-link"><i class="undefined"></i>
+  Gridsome
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/ECMAScript6/" class="nav-link"><i class="undefined"></i>
+  ECMAScript6
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/函数式编程/" class="nav-link"><i class="undefined"></i>
+  函数式编程
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/JS异步编程/" class="nav-link"><i class="undefined"></i>
+  JS异步编程
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/前端工程化/" class="nav-link"><i class="undefined"></i>
+  前端工程化
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/前端规范化标准/" class="nav-link"><i class="undefined"></i>
+  前端规范化标准
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/webpack源码解析/" class="nav-link"><i class="undefined"></i>
+  webpack源码解析
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/vuex/" class="nav-link"><i class="undefined"></i>
+  vuex
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/微前端/" class="nav-link"><i class="undefined"></i>
+  微前端
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/qiankun源码/" class="nav-link"><i class="undefined"></i>
+  qiankun源码
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/小程序/" class="nav-link"><i class="undefined"></i>
+  小程序
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/JS性能/" class="nav-link"><i class="undefined"></i>
+  JS性能
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/JS类型系统/" class="nav-link"><i class="undefined"></i>
+  JS类型系统
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/TypeScript/" class="nav-link"><i class="undefined"></i>
+  TypeScript
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/Vue源码/" class="nav-link"><i class="undefined"></i>
+  Vue源码
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/vue基础/" class="nav-link"><i class="undefined"></i>
+  vue基础
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/vue3源码/" class="nav-link"><i class="undefined"></i>
+  vue3源码
+</a></li></ul></div></div><div class="nav-item"><a href="/my-front-end-learning/tag/" class="nav-link"><i class="iconfont reco-tag"></i>
+  标签
+</a></div><div class="nav-item"><a href="/my-front-end-learning/timeline/" class="nav-link"><i class="iconfont reco-date"></i>
+  时间线
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="iconfont reco-message"></i>
+      Contact
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://github.com/recoluan" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="iconfont reco-github"></i>
+  GitHub
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://github.com/Lisheri" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="iconfont reco-github"></i>
+  myGitHub
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask" data-v-1156296a></div> <aside class="sidebar" data-v-1156296a><div class="personal-info-wrapper" data-v-828910c6 data-v-1156296a><img src="/my-front-end-learning/Lisher.jpeg" alt="author-avatar" class="personal-img" data-v-828910c6> <h3 class="name" data-v-828910c6>
+    Lisher
+  </h3> <div class="num" data-v-828910c6><div data-v-828910c6><h3 data-v-828910c6>173</h3> <h6 data-v-828910c6>Articles</h6></div> <div data-v-828910c6><h3 data-v-828910c6>24</h3> <h6 data-v-828910c6>Tags</h6></div></div> <ul class="social-links" data-v-828910c6></ul> <hr data-v-828910c6></div> <nav class="nav-links"><div class="nav-item"><a href="/my-front-end-learning/" class="nav-link"><i class="iconfont reco-home"></i>
+  主页
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="iconfont reco-category"></i>
+      目录
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/ssr基础/" class="nav-link"><i class="undefined"></i>
+  ssr基础
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/Gridsome/" class="nav-link"><i class="undefined"></i>
+  Gridsome
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/ECMAScript6/" class="nav-link"><i class="undefined"></i>
+  ECMAScript6
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/函数式编程/" class="nav-link"><i class="undefined"></i>
+  函数式编程
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/JS异步编程/" class="nav-link"><i class="undefined"></i>
+  JS异步编程
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/前端工程化/" class="nav-link"><i class="undefined"></i>
+  前端工程化
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/前端规范化标准/" class="nav-link"><i class="undefined"></i>
+  前端规范化标准
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/webpack源码解析/" class="nav-link"><i class="undefined"></i>
+  webpack源码解析
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/vuex/" class="nav-link"><i class="undefined"></i>
+  vuex
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/微前端/" class="nav-link"><i class="undefined"></i>
+  微前端
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/qiankun源码/" class="nav-link"><i class="undefined"></i>
+  qiankun源码
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/小程序/" class="nav-link"><i class="undefined"></i>
+  小程序
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/JS性能/" class="nav-link"><i class="undefined"></i>
+  JS性能
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/JS类型系统/" class="nav-link"><i class="undefined"></i>
+  JS类型系统
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/TypeScript/" class="nav-link"><i class="undefined"></i>
+  TypeScript
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/Vue源码/" class="nav-link"><i class="undefined"></i>
+  Vue源码
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/vue基础/" class="nav-link"><i class="undefined"></i>
+  vue基础
+</a></li><li class="dropdown-item"><!----> <a href="/my-front-end-learning/categories/vue3源码/" class="nav-link"><i class="undefined"></i>
+  vue3源码
+</a></li></ul></div></div><div class="nav-item"><a href="/my-front-end-learning/tag/" class="nav-link"><i class="iconfont reco-tag"></i>
+  标签
+</a></div><div class="nav-item"><a href="/my-front-end-learning/timeline/" class="nav-link"><i class="iconfont reco-date"></i>
+  时间线
+</a></div><div class="nav-item"><div class="dropdown-wrapper"><a class="dropdown-title"><span class="title"><i class="iconfont reco-message"></i>
+      Contact
+    </span> <span class="arrow right"></span></a> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://github.com/recoluan" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="iconfont reco-github"></i>
+  GitHub
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://github.com/Lisheri" target="_blank" rel="noopener noreferrer" class="nav-link external"><i class="iconfont reco-github"></i>
+  myGitHub
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul></div></div> <!----></nav> <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>vue3简介</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/my-front-end-learning/blogs/vue3-resource/introduction/1.html" class="sidebar-link">Vue3源码组织方式</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>核心组件实现</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/my-front-end-learning/blogs/vue3-resource/core/1.html" class="sidebar-link">Vue3组件渲染 - 组件化</a></li><li><a href="/my-front-end-learning/blogs/vue3-resource/core/2.html" class="sidebar-link">Vue3组件渲染 - 应用程序初始化</a></li><li><a href="/my-front-end-learning/blogs/vue3-resource/core/3.html" class="sidebar-link">Vue3组件渲染 - 核心渲染流程</a></li><li><a href="/my-front-end-learning/blogs/vue3-resource/core/4.html" aria-current="page" class="active sidebar-link">Vue3组件渲染 - 完整的DOM Diff 流程(一)</a></li></ul></section></li></ul> </aside> <div class="password-shadow password-wrapper-in" style="display:none;" data-v-4e82dffc data-v-1156296a><h3 class="title" data-v-4e82dffc data-v-4e82dffc>Vue3组件渲染 - 完整的DOM Diff 流程(一)</h3> <!----> <label id="box" class="inputBox" data-v-4e82dffc data-v-4e82dffc><input type="password" value="" data-v-4e82dffc> <span data-v-4e82dffc>Konck! Knock!</span> <button data-v-4e82dffc>OK</button></label> <div class="footer" data-v-4e82dffc data-v-4e82dffc><span data-v-4e82dffc><i class="iconfont reco-theme" data-v-4e82dffc></i> <a target="blank" href="https://vuepress-theme-reco.recoluan.com" data-v-4e82dffc>vuePress-theme-reco</a></span> <span data-v-4e82dffc><i class="iconfont reco-copyright" data-v-4e82dffc></i> <a data-v-4e82dffc><span data-v-4e82dffc>Lisher</span>
+            
+          <span data-v-4e82dffc>2021 - </span>
+          2022
+        </a></span></div></div> <div data-v-1156296a><main class="page"><section><div class="page-title"><h1 class="title">Vue3组件渲染 - 完整的DOM Diff 流程(一)</h1> <div data-v-1ff7123e><i class="iconfont reco-account" data-v-1ff7123e><span data-v-1ff7123e>Lisher</span></i> <i class="iconfont reco-date" data-v-1ff7123e><span data-v-1ff7123e>9/20/2022</span></i> <i class="iconfont reco-eye" data-v-1ff7123e><span id="/my-front-end-learning/blogs/vue3-resource/core/4.html" data-flag-title="Your Article Title" class="leancloud-visitors" data-v-1ff7123e><a class="leancloud-visitors-count" style="font-size:.9rem;font-weight:normal;color:#999;"></a></span></i> <i class="tags iconfont reco-tag" data-v-1ff7123e><span class="tag-item" data-v-1ff7123e>vue</span></i></div></div> <div class="theme-reco-content content__default"><h1 id="vue3组件渲染-完整的dom-diff-流程-一"><a href="#vue3组件渲染-完整的dom-diff-流程-一" class="header-anchor">#</a> Vue3组件渲染 - 完整的DOM Diff 流程(一)</h1> <ul><li>Vue组件的渲染流程, 本质上就是把各种类型的vnode渲染为真实DOM</li> <li>组件是由模板、组件描述对象和数据构成的, 数据的变化会影响组件的变化
+<ul><li>组件的渲染过程中创建了一个带副作用的渲染函数</li> <li>当数据变化的时候就会执行这个渲染函数来触发组件更新</li></ul></li></ul> <h2 id="带副作用渲染函数更新组件的过程"><a href="#带副作用渲染函数更新组件的过程" class="header-anchor">#</a> 带副作用渲染函数更新组件的过程</h2> <p>以下是副作用渲染函数 setupRenderEffect 的实现</p> <div class="language-ts line-numbers-mode"><pre class="language-ts"><code><span class="token keyword">const</span> setupRenderEffect<span class="token operator">:</span> <span class="token function-variable function">SetupRenderEffectFn</span> <span class="token operator">=</span> <span class="token punctuation">(</span>
+    instance<span class="token punctuation">,</span>
+    initialVNode<span class="token punctuation">,</span>
+    container<span class="token punctuation">,</span>
+    anchor<span class="token punctuation">,</span>
+    parentSuspense<span class="token punctuation">,</span>
+    isSVG<span class="token punctuation">,</span>
+    optimized
+  <span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+    <span class="token comment">// create reactive effect for rendering</span>
+    <span class="token comment">// 创建响应式的副作用渲染函数</span>
+    instance<span class="token punctuation">.</span>update <span class="token operator">=</span> <span class="token function">effect</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token function">componentEffect</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>instance<span class="token punctuation">.</span>isMounted<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 创建组件</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 更新组件</span>
+        <span class="token comment">// updateComponent</span>
+        <span class="token comment">// This is triggered by mutation of component's own state (next: null)</span>
+        <span class="token comment">// OR parent calling processComponent (next: VNode)</span>
+        <span class="token keyword">let</span> <span class="token punctuation">{</span> next<span class="token punctuation">,</span> bu<span class="token punctuation">,</span> u<span class="token punctuation">,</span> parent<span class="token punctuation">,</span> vnode <span class="token punctuation">}</span> <span class="token operator">=</span> instance
+        <span class="token keyword">let</span> originNext <span class="token operator">=</span> next
+        <span class="token keyword">let</span> vnodeHook<span class="token operator">:</span> VNodeHook <span class="token operator">|</span> <span class="token keyword">null</span> <span class="token operator">|</span> <span class="token keyword">undefined</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>__DEV__<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token function">pushWarningContext</span><span class="token punctuation">(</span>next <span class="token operator">||</span> instance<span class="token punctuation">.</span>vnode<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment">// next表示新的组件VNode</span>
+        <span class="token comment">// 这里先判断新的组件实例中是否有新的组件VNode(这里设计一个组件更新的逻辑, 稍后会说, 这也是需要判断的原因)</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>next<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token comment">// 有则更新组件VNode</span>
+          next<span class="token punctuation">.</span>el <span class="token operator">=</span> vnode<span class="token punctuation">.</span>el
+          <span class="token function">updateComponentPreRender</span><span class="token punctuation">(</span>instance<span class="token punctuation">,</span> next<span class="token punctuation">,</span> optimized<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+          <span class="token comment">// 没有则next指向之前的组件VNode</span>
+          next <span class="token operator">=</span> vnode
+        <span class="token punctuation">}</span>
+
+        <span class="token comment">// beforeUpdate hook</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>bu<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token function">invokeArrayFns</span><span class="token punctuation">(</span>bu<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment">// onVnodeBeforeUpdate</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>vnodeHook <span class="token operator">=</span> next<span class="token punctuation">.</span>props <span class="token operator">&amp;&amp;</span> next<span class="token punctuation">.</span>props<span class="token punctuation">.</span>onVnodeBeforeUpdate<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token function">invokeVNodeHook</span><span class="token punctuation">(</span>vnodeHook<span class="token punctuation">,</span> parent<span class="token punctuation">,</span> next<span class="token punctuation">,</span> vnode<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment">// render</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>__DEV__<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token function">startMeasure</span><span class="token punctuation">(</span>instance<span class="token punctuation">,</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">render</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment">// 渲染新的子树vnode</span>
+        <span class="token keyword">const</span> nextTree <span class="token operator">=</span> <span class="token function">renderComponentRoot</span><span class="token punctuation">(</span>instance<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>__DEV__<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token function">endMeasure</span><span class="token punctuation">(</span>instance<span class="token punctuation">,</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">render</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment">// 缓存旧的子树vnode</span>
+        <span class="token keyword">const</span> prevTree <span class="token operator">=</span> instance<span class="token punctuation">.</span>subTree
+        <span class="token comment">// 更新子树vnode</span>
+        instance<span class="token punctuation">.</span>subTree <span class="token operator">=</span> nextTree
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>__DEV__<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token function">startMeasure</span><span class="token punctuation">(</span>instance<span class="token punctuation">,</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">patch</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment">// 组件更新核心逻辑, 根据新旧子树vnode做patch</span>
+        <span class="token function">patch</span><span class="token punctuation">(</span>
+          prevTree<span class="token punctuation">,</span>
+          nextTree<span class="token punctuation">,</span>
+          <span class="token comment">// parent may have changed if it's in a teleport</span>
+          <span class="token comment">// 如果在teleport组件中父节点可能已经改变, 所以容器直接找旧树DOM元素的父节点</span>
+          <span class="token function">hostParentNode</span><span class="token punctuation">(</span>prevTree<span class="token punctuation">.</span>el<span class="token operator">!</span><span class="token punctuation">)</span><span class="token operator">!</span><span class="token punctuation">,</span>
+          <span class="token comment">// anchor may have changed if it's in a fragment</span>
+          <span class="token comment">// 参考节点(锚点)在fragment的情况可能改变, 所以直接找旧树DOM元素的下一个节点</span>
+          <span class="token function">getNextHostNode</span><span class="token punctuation">(</span>prevTree<span class="token punctuation">)</span><span class="token punctuation">,</span>
+          instance<span class="token punctuation">,</span>
+          parentSuspense<span class="token punctuation">,</span>
+          isSVG
+        <span class="token punctuation">)</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>__DEV__<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token function">endMeasure</span><span class="token punctuation">(</span>instance<span class="token punctuation">,</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">patch</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment">// 缓存更新后的DOM节点</span>
+        next<span class="token punctuation">.</span>el <span class="token operator">=</span> nextTree<span class="token punctuation">.</span>el
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>originNext <span class="token operator">===</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token comment">// self-triggered update. In case of HOC, update parent component</span>
+          <span class="token comment">// vnode el. HOC is indicated by parent instance's subTree pointing</span>
+          <span class="token comment">// to child component's vnode</span>
+          <span class="token function">updateHOCHostEl</span><span class="token punctuation">(</span>instance<span class="token punctuation">,</span> nextTree<span class="token punctuation">.</span>el<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment">// updated hook</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>u<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token function">queuePostRenderEffect</span><span class="token punctuation">(</span>u<span class="token punctuation">,</span> parentSuspense<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment">// onVnodeUpdated</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>vnodeHook <span class="token operator">=</span> next<span class="token punctuation">.</span>props <span class="token operator">&amp;&amp;</span> next<span class="token punctuation">.</span>props<span class="token punctuation">.</span>onVnodeUpdated<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token function">queuePostRenderEffect</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+            <span class="token function">invokeVNodeHook</span><span class="token punctuation">(</span>vnodeHook<span class="token operator">!</span><span class="token punctuation">,</span> parent<span class="token punctuation">,</span> next<span class="token operator">!</span><span class="token punctuation">,</span> vnode<span class="token punctuation">)</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span> parentSuspense<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>__DEV__ <span class="token operator">||</span> __FEATURE_PROD_DEVTOOLS__<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token function">devtoolsComponentUpdated</span><span class="token punctuation">(</span>instance<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>__DEV__<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token function">popWarningContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> __DEV__ <span class="token operator">?</span> <span class="token function">createDevEffectOptions</span><span class="token punctuation">(</span>instance<span class="token punctuation">)</span> <span class="token operator">:</span> prodEffectOptions<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br><span class="line-number">54</span><br><span class="line-number">55</span><br><span class="line-number">56</span><br><span class="line-number">57</span><br><span class="line-number">58</span><br><span class="line-number">59</span><br><span class="line-number">60</span><br><span class="line-number">61</span><br><span class="line-number">62</span><br><span class="line-number">63</span><br><span class="line-number">64</span><br><span class="line-number">65</span><br><span class="line-number">66</span><br><span class="line-number">67</span><br><span class="line-number">68</span><br><span class="line-number">69</span><br><span class="line-number">70</span><br><span class="line-number">71</span><br><span class="line-number">72</span><br><span class="line-number">73</span><br><span class="line-number">74</span><br><span class="line-number">75</span><br><span class="line-number">76</span><br><span class="line-number">77</span><br><span class="line-number">78</span><br><span class="line-number">79</span><br><span class="line-number">80</span><br><span class="line-number">81</span><br><span class="line-number">82</span><br><span class="line-number">83</span><br><span class="line-number">84</span><br><span class="line-number">85</span><br><span class="line-number">86</span><br><span class="line-number">87</span><br><span class="line-number">88</span><br><span class="line-number">89</span><br><span class="line-number">90</span><br><span class="line-number">91</span><br><span class="line-number">92</span><br><span class="line-number">93</span><br><span class="line-number">94</span><br><span class="line-number">95</span><br><span class="line-number">96</span><br><span class="line-number">97</span><br><span class="line-number">98</span><br><span class="line-number">99</span><br><span class="line-number">100</span><br><span class="line-number">101</span><br><span class="line-number">102</span><br><span class="line-number">103</span><br><span class="line-number">104</span><br><span class="line-number">105</span><br><span class="line-number">106</span><br><span class="line-number">107</span><br><span class="line-number">108</span><br><span class="line-number">109</span><br></div></div><p>可以看到更新组件主要做三件事情:</p> <ol><li>更新组件VNode节点</li></ol> <ul><li>这里会有一个条件判断, 判断新的组件实例中是否会有新的组件VNode, 用 next 表示</li> <li>有则更新组件VNode</li> <li>没有则next指向之前的组件VNode</li> <li>关于需要条件判断的原因, 这里涉及一个组件更新策略的逻辑, 后续细🔐</li></ul> <ol start="2"><li>渲染新子树vnode(subTree)</li></ol> <ul><li>因为渲染发生了变化, 模板也和数据相关, 所以渲染生成的子树vnode也会发生相应的变化</li> <li>调用 renderComponentRoot 渲染新的子树vnode</li> <li>然后缓存旧的子树vndoe</li> <li>缓存完毕后, 将新的子树vnode指向 instance.subTree, 更新子树vnode</li></ul> <ol start="3"><li>根据新旧子树VNode执行<a href="/my-front-end-learning/blogs/vue3-resource/core/4.html#patch更新逻辑">patch</a>逻辑</li></ol> <ul><li>组件更新的核心逻辑</li> <li>用来找出子树vnode的不同, 并找出一种合适的方式更新dom</li></ul> <h2 id="patch更新逻辑"><a href="#patch更新逻辑" class="header-anchor">#</a> patch更新逻辑</h2> <p>根据patch的逻辑可以看到</p> <ol><li>首先判断新旧节点是否存在且是否为相同的vnode类型</li></ol> <ul><li>如果不同, 则销毁旧节点。比如一个div更新成p, 最简单的操作就是删除div, 在挂载新的p节点</li> <li>如果是相同的vnode类型, 就需要走diff更新流程了</li></ul> <ol start="2"><li>他的更新流程已经是根据不同的vnode类型走不同的处理逻辑, 依然是主要看普通元素节点和组件的处理流程</li></ol> <ul><li>处理组件
+<ul><li>组件的更新最终还是要转换成内部真实DOM的更新, 而普通元素的处理流程才是真正做DOM更新</li> <li>组件更新依然调用<a href="/my-front-end-learning/blogs/vue3-resource/core/4.html#processcomponent">processComponent</a></li></ul></li> <li>处理普通元素节点
+<ul><li>通过调用 <a href="/my-front-end-learning/blogs/vue3-resource/core/4.html#processelement">processElement</a></li></ul></li></ul> <div class="language-ts line-numbers-mode"><pre class="language-ts"><code><span class="token keyword">const</span> patch<span class="token operator">:</span> <span class="token function-variable function">PatchFn</span> <span class="token operator">=</span> <span class="token punctuation">(</span>
+    n1<span class="token punctuation">,</span>
+    n2<span class="token punctuation">,</span>
+    container<span class="token punctuation">,</span>
+    anchor <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+    parentComponent <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+    parentSuspense <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+    isSVG <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    slotScopeIds <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+    optimized <span class="token operator">=</span> <span class="token boolean">false</span>
+  <span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+    <span class="token comment">// patching &amp; not same type, unmount old tree</span>
+    <span class="token comment">// 如果存在新旧节点, 且新旧节点类型不同，则销毁旧节点</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>n1 <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span><span class="token function">isSameVNodeType</span><span class="token punctuation">(</span>n1<span class="token punctuation">,</span> n2<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      anchor <span class="token operator">=</span> <span class="token function">getNextHostNode</span><span class="token punctuation">(</span>n1<span class="token punctuation">)</span>
+      <span class="token function">unmount</span><span class="token punctuation">(</span>n1<span class="token punctuation">,</span> parentComponent<span class="token punctuation">,</span> parentSuspense<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+      n1 <span class="token operator">=</span> <span class="token keyword">null</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>n2<span class="token punctuation">.</span>patchFlag <span class="token operator">===</span> PatchFlags<span class="token punctuation">.</span><span class="token constant">BAIL</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      optimized <span class="token operator">=</span> <span class="token boolean">false</span>
+      n2<span class="token punctuation">.</span>dynamicChildren <span class="token operator">=</span> <span class="token keyword">null</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">const</span> <span class="token punctuation">{</span> <span class="token keyword">type</span><span class="token punctuation">,</span> ref<span class="token punctuation">,</span> shapeFlag <span class="token punctuation">}</span> <span class="token operator">=</span> n2
+    <span class="token keyword">switch</span> <span class="token punctuation">(</span><span class="token keyword">type</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">case</span> Text<span class="token operator">:</span>
+        <span class="token comment">// 处理文本节点</span>
+        <span class="token function">processText</span><span class="token punctuation">(</span>n1<span class="token punctuation">,</span> n2<span class="token punctuation">,</span> container<span class="token punctuation">,</span> anchor<span class="token punctuation">)</span>
+        <span class="token keyword">break</span>
+      <span class="token keyword">case</span> Comment<span class="token operator">:</span>
+        <span class="token comment">// 处理注释节点</span>
+        <span class="token function">processCommentNode</span><span class="token punctuation">(</span>n1<span class="token punctuation">,</span> n2<span class="token punctuation">,</span> container<span class="token punctuation">,</span> anchor<span class="token punctuation">)</span>
+        <span class="token keyword">break</span>
+      <span class="token keyword">case</span> Static<span class="token operator">:</span>
+        <span class="token comment">// 处理静态节点</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>n1 <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token function">mountStaticNode</span><span class="token punctuation">(</span>n2<span class="token punctuation">,</span> container<span class="token punctuation">,</span> anchor<span class="token punctuation">,</span> isSVG<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>__DEV__<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token function">patchStaticNode</span><span class="token punctuation">(</span>n1<span class="token punctuation">,</span> n2<span class="token punctuation">,</span> container<span class="token punctuation">,</span> isSVG<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">break</span>
+      <span class="token keyword">case</span> Fragment<span class="token operator">:</span>
+        <span class="token comment">// 处理Fragment</span>
+        <span class="token function">processFragment</span><span class="token punctuation">(</span>
+          n1<span class="token punctuation">,</span>
+          n2<span class="token punctuation">,</span>
+          container<span class="token punctuation">,</span>
+          anchor<span class="token punctuation">,</span>
+          parentComponent<span class="token punctuation">,</span>
+          parentSuspense<span class="token punctuation">,</span>
+          isSVG<span class="token punctuation">,</span>
+          slotScopeIds<span class="token punctuation">,</span>
+          optimized
+        <span class="token punctuation">)</span>
+        <span class="token keyword">break</span>
+      <span class="token keyword">default</span><span class="token operator">:</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>shapeFlag <span class="token operator">&amp;</span> ShapeFlags<span class="token punctuation">.</span><span class="token constant">ELEMENT</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token comment">// 处理普通DOM元素</span>
+          <span class="token function">processElement</span><span class="token punctuation">(</span>
+            n1<span class="token punctuation">,</span>
+            n2<span class="token punctuation">,</span>
+            container<span class="token punctuation">,</span>
+            anchor<span class="token punctuation">,</span>
+            parentComponent<span class="token punctuation">,</span>
+            parentSuspense<span class="token punctuation">,</span>
+            isSVG<span class="token punctuation">,</span>
+            slotScopeIds<span class="token punctuation">,</span>
+            optimized
+          <span class="token punctuation">)</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>shapeFlag <span class="token operator">&amp;</span> ShapeFlags<span class="token punctuation">.</span><span class="token constant">COMPONENT</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token comment">// 处理组件</span>
+          <span class="token function">processComponent</span><span class="token punctuation">(</span>
+            n1<span class="token punctuation">,</span>
+            n2<span class="token punctuation">,</span>
+            container<span class="token punctuation">,</span>
+            anchor<span class="token punctuation">,</span>
+            parentComponent<span class="token punctuation">,</span>
+            parentSuspense<span class="token punctuation">,</span>
+            isSVG<span class="token punctuation">,</span>
+            slotScopeIds<span class="token punctuation">,</span>
+            optimized
+          <span class="token punctuation">)</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>shapeFlag <span class="token operator">&amp;</span> ShapeFlags<span class="token punctuation">.</span><span class="token constant">TELEPORT</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token comment">// 处理TELEPORT</span>
+          <span class="token punctuation">;</span><span class="token punctuation">(</span><span class="token keyword">type</span> <span class="token class-name"><span class="token keyword">as</span></span> <span class="token keyword">typeof</span> TeleportImpl<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">process</span><span class="token punctuation">(</span>
+            n1 <span class="token keyword">as</span> TeleportVNode<span class="token punctuation">,</span>
+            n2 <span class="token keyword">as</span> TeleportVNode<span class="token punctuation">,</span>
+            container<span class="token punctuation">,</span>
+            anchor<span class="token punctuation">,</span>
+            parentComponent<span class="token punctuation">,</span>
+            parentSuspense<span class="token punctuation">,</span>
+            isSVG<span class="token punctuation">,</span>
+            slotScopeIds<span class="token punctuation">,</span>
+            optimized<span class="token punctuation">,</span>
+            internals
+          <span class="token punctuation">)</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>__FEATURE_SUSPENSE__ <span class="token operator">&amp;&amp;</span> shapeFlag <span class="token operator">&amp;</span> ShapeFlags<span class="token punctuation">.</span><span class="token constant">SUSPENSE</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token comment">// 处理SUSPENSE</span>
+          <span class="token punctuation">;</span><span class="token punctuation">(</span><span class="token keyword">type</span> <span class="token class-name"><span class="token keyword">as</span></span> <span class="token keyword">typeof</span> SuspenseImpl<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">process</span><span class="token punctuation">(</span>
+            n1<span class="token punctuation">,</span>
+            n2<span class="token punctuation">,</span>
+            container<span class="token punctuation">,</span>
+            anchor<span class="token punctuation">,</span>
+            parentComponent<span class="token punctuation">,</span>
+            parentSuspense<span class="token punctuation">,</span>
+            isSVG<span class="token punctuation">,</span>
+            slotScopeIds<span class="token punctuation">,</span>
+            optimized<span class="token punctuation">,</span>
+            internals
+          <span class="token punctuation">)</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>__DEV__<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token function">warn</span><span class="token punctuation">(</span><span class="token string">'Invalid VNode type:'</span><span class="token punctuation">,</span> <span class="token keyword">type</span><span class="token punctuation">,</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">(</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token keyword">typeof</span> <span class="token keyword">type</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">)</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// set ref</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>ref <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> parentComponent<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token function">setRef</span><span class="token punctuation">(</span>ref<span class="token punctuation">,</span> n1 <span class="token operator">&amp;&amp;</span> n1<span class="token punctuation">.</span>ref<span class="token punctuation">,</span> parentSuspense<span class="token punctuation">,</span> n2<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br><span class="line-number">54</span><br><span class="line-number">55</span><br><span class="line-number">56</span><br><span class="line-number">57</span><br><span class="line-number">58</span><br><span class="line-number">59</span><br><span class="line-number">60</span><br><span class="line-number">61</span><br><span class="line-number">62</span><br><span class="line-number">63</span><br><span class="line-number">64</span><br><span class="line-number">65</span><br><span class="line-number">66</span><br><span class="line-number">67</span><br><span class="line-number">68</span><br><span class="line-number">69</span><br><span class="line-number">70</span><br><span class="line-number">71</span><br><span class="line-number">72</span><br><span class="line-number">73</span><br><span class="line-number">74</span><br><span class="line-number">75</span><br><span class="line-number">76</span><br><span class="line-number">77</span><br><span class="line-number">78</span><br><span class="line-number">79</span><br><span class="line-number">80</span><br><span class="line-number">81</span><br><span class="line-number">82</span><br><span class="line-number">83</span><br><span class="line-number">84</span><br><span class="line-number">85</span><br><span class="line-number">86</span><br><span class="line-number">87</span><br><span class="line-number">88</span><br><span class="line-number">89</span><br><span class="line-number">90</span><br><span class="line-number">91</span><br><span class="line-number">92</span><br><span class="line-number">93</span><br><span class="line-number">94</span><br><span class="line-number">95</span><br><span class="line-number">96</span><br><span class="line-number">97</span><br><span class="line-number">98</span><br><span class="line-number">99</span><br><span class="line-number">100</span><br><span class="line-number">101</span><br><span class="line-number">102</span><br><span class="line-number">103</span><br><span class="line-number">104</span><br><span class="line-number">105</span><br><span class="line-number">106</span><br><span class="line-number">107</span><br><span class="line-number">108</span><br><span class="line-number">109</span><br><span class="line-number">110</span><br><span class="line-number">111</span><br><span class="line-number">112</span><br><span class="line-number">113</span><br><span class="line-number">114</span><br><span class="line-number">115</span><br><span class="line-number">116</span><br><span class="line-number">117</span><br><span class="line-number">118</span><br><span class="line-number">119</span><br><span class="line-number">120</span><br><span class="line-number">121</span><br></div></div><h2 id="processcomponent"><a href="#processcomponent" class="header-anchor">#</a> processComponent</h2> <p>和渲染过程类似, 更新过程也是一个树的深度优先遍历过程</p> <p>主要通过执行 <a href="/my-front-end-learning/blogs/vue3-resource/core/4.html#updatecomponent">updateComponent</a> 函数更新子组件</p> <p>通过下面的分析我们可以知道, processComponent 处理组件 vnode，本质上就是去判断子组件是否需要更新</p> <p>如果需要则递归执行子组件的副作用渲染函数来更新</p> <p>否则仅仅更新一些 vnode 的属性，并让子组件实例保留对组件 vnode 的引用，用于子组件自身数据变化引起组件重新渲染的时候，在渲染函数内部可以拿到新的组件 vnode。</p> <div class="language-ts line-numbers-mode"><pre class="language-ts"><code><span class="token keyword">const</span> <span class="token function-variable function">processComponent</span> <span class="token operator">=</span> <span class="token punctuation">(</span>
+    n1<span class="token operator">:</span> VNode <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+    n2<span class="token operator">:</span> VNode<span class="token punctuation">,</span>
+    container<span class="token operator">:</span> RendererElement<span class="token punctuation">,</span>
+    anchor<span class="token operator">:</span> RendererNode <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+    parentComponent<span class="token operator">:</span> ComponentInternalInstance <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+    parentSuspense<span class="token operator">:</span> SuspenseBoundary <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+    isSVG<span class="token operator">:</span> <span class="token builtin">boolean</span><span class="token punctuation">,</span>
+    slotScopeIds<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+    optimized<span class="token operator">:</span> <span class="token builtin">boolean</span>
+  <span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+    n2<span class="token punctuation">.</span>slotScopeIds <span class="token operator">=</span> slotScopeIds
+    <span class="token comment">// 如果n1(旧的vnode)不存在, 则执行挂载逻辑(挂载分为缓存组件直接激活和新组件挂载)</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>n1 <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment">// 挂载组件</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      <span class="token comment">// 旧的vnode存在, 则执行更新逻辑</span>
+      <span class="token function">updateComponent</span><span class="token punctuation">(</span>n1<span class="token punctuation">,</span> n2<span class="token punctuation">,</span> optimized<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br></div></div><h2 id="updatecomponent"><a href="#updatecomponent" class="header-anchor">#</a> updateComponent</h2> <p>updateComponent函数在更新子组件的时候会先执行 <code>shouldUpdateComponent</code> 函数, 根据新旧子组件vnode来判断是否需要更新子组件</p> <p>在 shouldUpdateComponent 函数内部, 主要是通过检测和对比组件vnode中的props, children, dirs, transition等属性, 来决定子组件是否需要更新</p> <p>因为一个组件的子组件是否需要更新, 主要依据子组件vnode是否存在一些会影响组件更新的属性变化进行判断, 如果存在就会更新子组件</p> <blockquote><p>虽然vue的更新粒度是组件级别的, 组件的数据变化只会影响当前组件的更新</p> <p>但是在组件更新的过程中, 也会对子组件做一定的检查, 判断子组件是否也需要更新, 并通过某种机制避免子组件重复更新</p> <p>在updateComponent函数中, 如果 <code>shouldUpdateComponent</code>函数执行返回true, 那么在它的最后, 先执行<code>invalidateJob(instance.update)</code>来避免子组件因自身数据变化导致的重复更新</p> <p>然后继续执行子组件的副作用渲染函数 <code>instance.update</code>来主动触发子组件的更新</p> <p>接着进入<a href="/my-front-end-learning/blogs/vue3-resource/core/4.html#update">instance.update</a></p> <p>如果不需要更新, 则子组件实例保留对组件vnode的引用, 仅仅更新一些vnode的属性</p> <p>在子组件自身数据变化引起组件重新渲染的时候, 再渲染函数内部可以拿到新的组件vnode</p></blockquote> <div class="language-ts line-numbers-mode"><pre class="language-ts"><code><span class="token keyword">const</span> <span class="token function-variable function">updateComponent</span> <span class="token operator">=</span> <span class="token punctuation">(</span>n1<span class="token operator">:</span> VNode<span class="token punctuation">,</span> n2<span class="token operator">:</span> VNode<span class="token punctuation">,</span> optimized<span class="token operator">:</span> <span class="token builtin">boolean</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> instance <span class="token operator">=</span> <span class="token punctuation">(</span>n2<span class="token punctuation">.</span>component <span class="token operator">=</span> n1<span class="token punctuation">.</span>component<span class="token punctuation">)</span><span class="token operator">!</span>
+    <span class="token comment">// 根据新旧子组件vnode判断是否需要更新</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">shouldUpdateComponent</span><span class="token punctuation">(</span>n1<span class="token punctuation">,</span> n2<span class="token punctuation">,</span> optimized<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>
+        __FEATURE_SUSPENSE__ <span class="token operator">&amp;&amp;</span>
+        instance<span class="token punctuation">.</span>asyncDep <span class="token operator">&amp;&amp;</span>
+        <span class="token operator">!</span>instance<span class="token punctuation">.</span>asyncResolved
+      <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 异步组件更新逻辑</span>
+        <span class="token operator">...</span>
+        <span class="token keyword">return</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 新的子组件vnode赋值给instance.next</span>
+        instance<span class="token punctuation">.</span>next <span class="token operator">=</span> n2
+        <span class="token comment">// 子组件也可能因为数据变化被添加到更新队列里了, 移除他们防止对一个子组件重复更新</span>
+        <span class="token function">invalidateJob</span><span class="token punctuation">(</span>instance<span class="token punctuation">.</span>update<span class="token punctuation">)</span>
+        <span class="token comment">// 执行子组件的副作用渲染函数</span>
+        instance<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      <span class="token comment">// 不需要更新则直接复制原组件即可</span>
+      n2<span class="token punctuation">.</span>component <span class="token operator">=</span> n1<span class="token punctuation">.</span>component
+      n2<span class="token punctuation">.</span>el <span class="token operator">=</span> n1<span class="token punctuation">.</span>el
+      instance<span class="token punctuation">.</span>vnode <span class="token operator">=</span> n2
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br></div></div><h2 id="update"><a href="#update" class="header-anchor">#</a> update</h2> <p>update函数其实定义于setupRenderEffect(副作用渲染函数)中</p> <p>其实组件更新的逻辑很好理解：</p> <ol><li>在更新组件的DOM前, 需要先更新组件vnode节点信息, 包括更改组件实例的vnode指针, 更新props和更新插槽等一系列操作</li> <li>因为组件在稍后执行renderComponentRoot时会重新渲染新的子树vnode, 依赖了更新后的组件vnode中的props和slots等数据</li> <li>主要通过 updateComponentPreRender实现, 主要做了如下操作</li></ol> <ul><li>在 updateComponentPreRender 中</li> <li>首先将新组件vnode的component属性指向组件实例</li> <li>缓存旧组件vnode的props属性</li> <li>组件实例的vnode属性指向新的组件vnode</li> <li>清空next属性, 为下一次更新做准备</li> <li>更新props</li> <li>更新插槽</li></ul> <div class="language-ts line-numbers-mode"><pre class="language-ts"><code><span class="token comment">// updateComponentPreRender</span>
+<span class="token keyword">const</span> <span class="token function-variable function">updateComponentPreRender</span> <span class="token operator">=</span> <span class="token punctuation">(</span>
+  instance<span class="token operator">:</span> ComponentInternalInstance<span class="token punctuation">,</span>
+  nextVNode<span class="token operator">:</span> VNode<span class="token punctuation">,</span>
+  optimized<span class="token operator">:</span> <span class="token builtin">boolean</span>
+<span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 新组件vnode的component属性指向组件实例</span>
+  nextVNode<span class="token punctuation">.</span>component <span class="token operator">=</span> instance
+  <span class="token comment">// 缓存旧组件vnode的props属性</span>
+  <span class="token keyword">const</span> prevProps <span class="token operator">=</span> instance<span class="token punctuation">.</span>vnode<span class="token punctuation">.</span>props
+  <span class="token comment">// 组件实例的vnode属性指向新的组件vnode</span>
+  instance<span class="token punctuation">.</span>vnode <span class="token operator">=</span> nextVNode
+  <span class="token comment">// 清空next属性, 为了下一次更新准备</span>
+  instance<span class="token punctuation">.</span>next <span class="token operator">=</span> <span class="token keyword">null</span>
+  <span class="token comment">// 更新props</span>
+  <span class="token function">updateProps</span><span class="token punctuation">(</span>instance<span class="token punctuation">,</span> nextVNode<span class="token punctuation">.</span>props<span class="token punctuation">,</span> prevProps<span class="token punctuation">,</span> optimized<span class="token punctuation">)</span>
+  <span class="token comment">// 更新插槽</span>
+  <span class="token function">updateSlots</span><span class="token punctuation">(</span>instance<span class="token punctuation">,</span> nextVNode<span class="token punctuation">.</span>children<span class="token punctuation">)</span>
+  <span class="token operator">...</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br></div></div><ol start="4"><li>所以一个组件重新渲染可能会有两种情况:</li></ol> <ul><li>一种是组件本身的数据变化, 这种情况下next是null</li> <li>另一种是父组件在更新的过程中, 遇到子组件节点, 先判断子组件是否需要更新</li> <li>如果需要则主动执行子组件的重新渲染方法, 这种情况下next就是新的子组件vnode</li></ul> <ol start="5"><li>这个地方可能还会存在一个疑问, 那就是这个子组件对应的新的组件vnode是什么时候创建的呢?</li></ol> <ul><li>答案很简单, 他是在父组件重新渲染的过程中, 通过renderComponentRoot渲染子树vnode的时候生成</li> <li>因为子树vnode是个树形结构, 通过遍历它的子节点就可以访问到其对应的组件vnode</li></ul> <div class="language-ts line-numbers-mode"><pre class="language-ts"><code>instance<span class="token punctuation">.</span>update <span class="token operator">=</span> <span class="token function">effect</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token function">componentEffect</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>instance<span class="token punctuation">.</span>isMounted<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 初始渲染逻辑</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 更新组件</span>
+        <span class="token comment">// updateComponent</span>
+        <span class="token comment">// This is triggered by mutation of component's own state (next: null)</span>
+        <span class="token comment">// OR parent calling processComponent (next: VNode)</span>
+        <span class="token keyword">let</span> <span class="token punctuation">{</span> next<span class="token punctuation">,</span> bu<span class="token punctuation">,</span> u<span class="token punctuation">,</span> parent<span class="token punctuation">,</span> vnode <span class="token punctuation">}</span> <span class="token operator">=</span> instance
+        <span class="token keyword">let</span> originNext <span class="token operator">=</span> next
+        <span class="token keyword">let</span> vnodeHook<span class="token operator">:</span> VNodeHook <span class="token operator">|</span> <span class="token keyword">null</span> <span class="token operator">|</span> <span class="token keyword">undefined</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>__DEV__<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token function">pushWarningContext</span><span class="token punctuation">(</span>next <span class="token operator">||</span> instance<span class="token punctuation">.</span>vnode<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment">// next表示新的组件VNode</span>
+        <span class="token comment">// 这里先判断新的组件实例中是否有新的组件VNode(这里设计一个组件更新的逻辑, 稍后会说, 这也是需要判断的原因)</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>next<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token comment">// 有则更新组件VNode</span>
+          next<span class="token punctuation">.</span>el <span class="token operator">=</span> vnode<span class="token punctuation">.</span>el
+          <span class="token comment">// 更新组件vnode节点信息</span>
+          <span class="token function">updateComponentPreRender</span><span class="token punctuation">(</span>instance<span class="token punctuation">,</span> next<span class="token punctuation">,</span> optimized<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+          <span class="token comment">// 没有则next指向之前的组件VNode</span>
+          next <span class="token operator">=</span> vnode
+        <span class="token punctuation">}</span>
+        <span class="token comment">// 渲染新的子树vnode</span>
+        <span class="token keyword">const</span> nextTree <span class="token operator">=</span> <span class="token function">renderComponentRoot</span><span class="token punctuation">(</span>instance<span class="token punctuation">)</span>
+        <span class="token comment">// 缓存旧的子树vnode</span>
+        <span class="token keyword">const</span> prevTree <span class="token operator">=</span> instance<span class="token punctuation">.</span>subTree
+        <span class="token comment">// 更新子树vnode</span>
+        instance<span class="token punctuation">.</span>subTree <span class="token operator">=</span> nextTree
+        <span class="token comment">// 组件更新核心逻辑, 根据新旧子树vnode做patch</span>
+        <span class="token function">patch</span><span class="token punctuation">(</span>
+          prevTree<span class="token punctuation">,</span>
+          nextTree<span class="token punctuation">,</span>
+          <span class="token comment">// parent may have changed if it's in a teleport</span>
+          <span class="token comment">// 如果在teleport组件中父节点可能已经改变, 所以容器直接找旧树DOM元素的父节点</span>
+          <span class="token function">hostParentNode</span><span class="token punctuation">(</span>prevTree<span class="token punctuation">.</span>el<span class="token operator">!</span><span class="token punctuation">)</span><span class="token operator">!</span><span class="token punctuation">,</span>
+          <span class="token comment">// anchor may have changed if it's in a fragment</span>
+          <span class="token comment">// 参考节点(锚点)在fragment的情况可能改变, 所以直接找旧树DOM元素的下一个节点</span>
+          <span class="token function">getNextHostNode</span><span class="token punctuation">(</span>prevTree<span class="token punctuation">)</span><span class="token punctuation">,</span>
+          instance<span class="token punctuation">,</span>
+          parentSuspense<span class="token punctuation">,</span>
+          isSVG
+        <span class="token punctuation">)</span>
+        <span class="token comment">// 缓存更新后的DOM节点</span>
+        next<span class="token punctuation">.</span>el <span class="token operator">=</span> nextTree<span class="token punctuation">.</span>el
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>originNext <span class="token operator">===</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token comment">// self-triggered update. In case of HOC, update parent component</span>
+          <span class="token comment">// vnode el. HOC is indicated by parent instance's subTree pointing</span>
+          <span class="token comment">// to child component's vnode</span>
+          <span class="token function">updateHOCHostEl</span><span class="token punctuation">(</span>instance<span class="token punctuation">,</span> nextTree<span class="token punctuation">.</span>el<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> __DEV__ <span class="token operator">?</span> <span class="token function">createDevEffectOptions</span><span class="token punctuation">(</span>instance<span class="token punctuation">)</span> <span class="token operator">:</span> prodEffectOptions<span class="token punctuation">)</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br><span class="line-number">54</span><br><span class="line-number">55</span><br><span class="line-number">56</span><br></div></div><h2 id="processelement"><a href="#processelement" class="header-anchor">#</a> processElement</h2> <p>元素更新逻辑核心就是执行 patchElement</p> <p>而在patchElement中, 也只做两件事:</p> <ul><li>更新props
+<ul><li>下面的 patchProps函数就是在更新DOM节点的class, style, event以及其他的一些DOM属性</li></ul></li> <li>更新子节点
+<ul><li>这里看一下patchChildren的实现
+<ul><li>首先根据patchFlag &gt; 0也就是存在patchFlag, 进一步判断是否处理fragment</li> <li>如果有, 则处理fragment</li> <li>接着处理非fragment的子节点, 共三种情况, 数组、文本节点和空节点</li> <li>如果当前节点是文本节点, 之前是数组, 则删除原有子节点</li> <li>如果当前节点是文本节点, 之前是文本, 且两个文本内容不等, 则直接更新文本内容, 替换新的文本</li> <li>如果之前子节点是数组, 新的子节点还是数组, 则执行 patchKeyedChildren, 做完整的diff流程, 和更新带key的fragment类似(这是最复杂的情况)</li> <li>如果之前子节点是数组, 新的子节点是文本或者空节点, 则删除原有子节点</li> <li>如果之前子节点是文本或者空, 新的子节点是空节点, 则将原有文本信息设置为空字符串(不管原来是文本还是空节点, 现在是空的都更新成空的)</li> <li>如果之前子节点是文本或空, 新的子节点是数组, 则挂载新的子节点</li></ul></li></ul></li></ul> <blockquote><p>这里用几张图表示上述情况</p></blockquote> <ol><li>旧的子节点是纯文本
+<img src="/my-front-end-learning/assets/img/2.71cd76f3.jpg" alt="纯文本旧节点"></li> <li>旧子节点是空
+<img src="/my-front-end-learning/assets/img/3.84ea92e4.jpg" alt="空节点旧节点"></li> <li>旧子节点是数组
+<img src="/my-front-end-learning/assets/img/4.dc1e0c17.png" alt="数组旧节点"></li></ol> <div class="language-ts line-numbers-mode"><pre class="language-ts"><code><span class="token keyword">const</span> patchChildren<span class="token operator">:</span> <span class="token function-variable function">PatchChildrenFn</span> <span class="token operator">=</span> <span class="token punctuation">(</span>
+    n1<span class="token punctuation">,</span>
+    n2<span class="token punctuation">,</span>
+    container<span class="token punctuation">,</span>
+    anchor<span class="token punctuation">,</span>
+    parentComponent<span class="token punctuation">,</span>
+    parentSuspense<span class="token punctuation">,</span>
+    isSVG<span class="token punctuation">,</span>
+    slotScopeIds<span class="token punctuation">,</span>
+    optimized <span class="token operator">=</span> <span class="token boolean">false</span>
+  <span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> c1 <span class="token operator">=</span> n1 <span class="token operator">&amp;&amp;</span> n1<span class="token punctuation">.</span>children
+    <span class="token keyword">const</span> prevShapeFlag <span class="token operator">=</span> n1 <span class="token operator">?</span> n1<span class="token punctuation">.</span>shapeFlag <span class="token operator">:</span> <span class="token number">0</span>
+    <span class="token keyword">const</span> c2 <span class="token operator">=</span> n2<span class="token punctuation">.</span>children
+
+    <span class="token keyword">const</span> <span class="token punctuation">{</span> patchFlag<span class="token punctuation">,</span> shapeFlag <span class="token punctuation">}</span> <span class="token operator">=</span> n2
+    <span class="token comment">// fast path</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>patchFlag <span class="token operator">&gt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment">// 处理有key的fragment</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>patchFlag <span class="token operator">&amp;</span> PatchFlags<span class="token punctuation">.</span><span class="token constant">KEYED_FRAGMENT</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// this could be either fully-keyed or mixed (some keyed some not)</span>
+        <span class="token comment">// presence of patchFlag means children are guaranteed to be arrays</span>
+        <span class="token function">patchKeyedChildren</span><span class="token punctuation">(</span>
+          c1 <span class="token keyword">as</span> VNode<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+          c2 <span class="token keyword">as</span> VNodeArrayChildren<span class="token punctuation">,</span>
+          container<span class="token punctuation">,</span>
+          anchor<span class="token punctuation">,</span>
+          parentComponent<span class="token punctuation">,</span>
+          parentSuspense<span class="token punctuation">,</span>
+          isSVG<span class="token punctuation">,</span>
+          slotScopeIds<span class="token punctuation">,</span>
+          optimized
+        <span class="token punctuation">)</span>
+        <span class="token keyword">return</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>patchFlag <span class="token operator">&amp;</span> PatchFlags<span class="token punctuation">.</span><span class="token constant">UNKEYED_FRAGMENT</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// unkeyed</span>
+        <span class="token comment">// 处理没有key的fragment</span>
+        <span class="token function">patchUnkeyedChildren</span><span class="token punctuation">(</span>
+          c1 <span class="token keyword">as</span> VNode<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+          c2 <span class="token keyword">as</span> VNodeArrayChildren<span class="token punctuation">,</span>
+          container<span class="token punctuation">,</span>
+          anchor<span class="token punctuation">,</span>
+          parentComponent<span class="token punctuation">,</span>
+          parentSuspense<span class="token punctuation">,</span>
+          isSVG<span class="token punctuation">,</span>
+          slotScopeIds<span class="token punctuation">,</span>
+          optimized
+        <span class="token punctuation">)</span>
+        <span class="token keyword">return</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// children has 3 possibilities: text, array or no children.</span>
+    <span class="token comment">// 逻辑与, 二者相等则返回相等的数, 否则为0</span>
+    <span class="token comment">// 除了fragement之外, 子节点还有 3 种可能情况：文本、数组、空</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>shapeFlag <span class="token operator">&amp;</span> ShapeFlags<span class="token punctuation">.</span><span class="token constant">TEXT_CHILDREN</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment">// 当前节点是文本节点</span>
+      <span class="token comment">// text children fast path</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>prevShapeFlag <span class="token operator">&amp;</span> ShapeFlags<span class="token punctuation">.</span><span class="token constant">ARRAY_CHILDREN</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 数组 -&gt; 文本的更新, 删除之前的子节点</span>
+        <span class="token function">unmountChildren</span><span class="token punctuation">(</span>c1 <span class="token keyword">as</span> VNode<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> parentComponent<span class="token punctuation">,</span> parentSuspense<span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>c2 <span class="token operator">!==</span> c1<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 文本对比不同, 则替换新文本</span>
+        <span class="token function">hostSetElementText</span><span class="token punctuation">(</span>container<span class="token punctuation">,</span> c2 <span class="token keyword">as</span> <span class="token builtin">string</span><span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>prevShapeFlag <span class="token operator">&amp;</span> ShapeFlags<span class="token punctuation">.</span><span class="token constant">ARRAY_CHILDREN</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 之前的节点是数组</span>
+        <span class="token comment">// prev children was array</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>shapeFlag <span class="token operator">&amp;</span> ShapeFlags<span class="token punctuation">.</span><span class="token constant">ARRAY_CHILDREN</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token comment">// 现在的节点也是数组, 做完整diff流程</span>
+          <span class="token comment">// two arrays, cannot assume anything, do full diff</span>
+          <span class="token function">patchKeyedChildren</span><span class="token punctuation">(</span>
+            c1 <span class="token keyword">as</span> VNode<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+            c2 <span class="token keyword">as</span> VNodeArrayChildren<span class="token punctuation">,</span>
+            container<span class="token punctuation">,</span>
+            anchor<span class="token punctuation">,</span>
+            parentComponent<span class="token punctuation">,</span>
+            parentSuspense<span class="token punctuation">,</span>
+            isSVG<span class="token punctuation">,</span>
+            slotScopeIds<span class="token punctuation">,</span>
+            optimized
+          <span class="token punctuation">)</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+          <span class="token comment">// 数组 -&gt; 非文本的单节点, 同样删除原来的节点</span>
+          <span class="token comment">// no new children, just unmount old</span>
+          <span class="token function">unmountChildren</span><span class="token punctuation">(</span>c1 <span class="token keyword">as</span> VNode<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> parentComponent<span class="token punctuation">,</span> parentSuspense<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 之前的子节点是文本节点或者空</span>
+        <span class="token comment">// 新的子节点是数组或者空</span>
+        <span class="token comment">// prev children was text OR null</span>
+        <span class="token comment">// new children is array OR null</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>prevShapeFlag <span class="token operator">&amp;</span> ShapeFlags<span class="token punctuation">.</span><span class="token constant">TEXT_CHILDREN</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token comment">// 之前是文本节点, 则将其清空</span>
+          <span class="token function">hostSetElementText</span><span class="token punctuation">(</span>container<span class="token punctuation">,</span> <span class="token string">''</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment">// mount new if array</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>shapeFlag <span class="token operator">&amp;</span> ShapeFlags<span class="token punctuation">.</span><span class="token constant">ARRAY_CHILDREN</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token comment">// 如果新节点是数组, 则挂载新的子节点</span>
+          <span class="token function">mountChildren</span><span class="token punctuation">(</span>
+            c2 <span class="token keyword">as</span> VNodeArrayChildren<span class="token punctuation">,</span>
+            container<span class="token punctuation">,</span>
+            anchor<span class="token punctuation">,</span>
+            parentComponent<span class="token punctuation">,</span>
+            parentSuspense<span class="token punctuation">,</span>
+            isSVG<span class="token punctuation">,</span>
+            slotScopeIds<span class="token punctuation">,</span>
+            optimized
+          <span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br><span class="line-number">54</span><br><span class="line-number">55</span><br><span class="line-number">56</span><br><span class="line-number">57</span><br><span class="line-number">58</span><br><span class="line-number">59</span><br><span class="line-number">60</span><br><span class="line-number">61</span><br><span class="line-number">62</span><br><span class="line-number">63</span><br><span class="line-number">64</span><br><span class="line-number">65</span><br><span class="line-number">66</span><br><span class="line-number">67</span><br><span class="line-number">68</span><br><span class="line-number">69</span><br><span class="line-number">70</span><br><span class="line-number">71</span><br><span class="line-number">72</span><br><span class="line-number">73</span><br><span class="line-number">74</span><br><span class="line-number">75</span><br><span class="line-number">76</span><br><span class="line-number">77</span><br><span class="line-number">78</span><br><span class="line-number">79</span><br><span class="line-number">80</span><br><span class="line-number">81</span><br><span class="line-number">82</span><br><span class="line-number">83</span><br><span class="line-number">84</span><br><span class="line-number">85</span><br><span class="line-number">86</span><br><span class="line-number">87</span><br><span class="line-number">88</span><br><span class="line-number">89</span><br><span class="line-number">90</span><br><span class="line-number">91</span><br><span class="line-number">92</span><br><span class="line-number">93</span><br><span class="line-number">94</span><br><span class="line-number">95</span><br><span class="line-number">96</span><br><span class="line-number">97</span><br><span class="line-number">98</span><br><span class="line-number">99</span><br><span class="line-number">100</span><br><span class="line-number">101</span><br><span class="line-number">102</span><br><span class="line-number">103</span><br><span class="line-number">104</span><br><span class="line-number">105</span><br><span class="line-number">106</span><br><span class="line-number">107</span><br><span class="line-number">108</span><br><span class="line-number">109</span><br><span class="line-number">110</span><br><span class="line-number">111</span><br><span class="line-number">112</span><br><span class="line-number">113</span><br><span class="line-number">114</span><br><span class="line-number">115</span><br></div></div><p>其实这是很好理解的，因为一个 DOM 节点元素就是由它自身的一些属性和子节点构成的。</p> <div class="language-ts line-numbers-mode"><pre class="language-ts"><code><span class="token keyword">const</span> <span class="token function-variable function">processElement</span> <span class="token operator">=</span> <span class="token punctuation">(</span>
+  n1<span class="token operator">:</span> VNode <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+  n2<span class="token operator">:</span> VNode<span class="token punctuation">,</span>
+  container<span class="token operator">:</span> RendererElement<span class="token punctuation">,</span>
+  anchor<span class="token operator">:</span> RendererNode <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+  parentComponent<span class="token operator">:</span> ComponentInternalInstance <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+  parentSuspense<span class="token operator">:</span> SuspenseBoundary <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+  isSVG<span class="token operator">:</span> <span class="token builtin">boolean</span><span class="token punctuation">,</span>
+  slotScopeIds<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+  optimized<span class="token operator">:</span> <span class="token builtin">boolean</span>
+<span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>n1 <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 挂载元素节点</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 更新元素节点</span>
+    <span class="token function">patchElement</span><span class="token punctuation">(</span>
+      n1<span class="token punctuation">,</span>
+      n2<span class="token punctuation">,</span>
+      parentComponent<span class="token punctuation">,</span>
+      parentSuspense<span class="token punctuation">,</span>
+      isSVG<span class="token punctuation">,</span>
+      slotScopeIds<span class="token punctuation">,</span>
+      optimized
+    <span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">const</span> <span class="token function-variable function">patchElement</span> <span class="token operator">=</span> <span class="token punctuation">(</span>n1<span class="token punctuation">,</span> n2<span class="token punctuation">,</span> parentComponent<span class="token punctuation">,</span> parentSuspense<span class="token punctuation">,</span> isSVG<span class="token punctuation">,</span> optimized<span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> el <span class="token operator">=</span> <span class="token punctuation">(</span>n2<span class="token punctuation">.</span>el <span class="token operator">=</span> n1<span class="token punctuation">.</span>el<span class="token punctuation">)</span>
+  <span class="token keyword">const</span> oldProps <span class="token operator">=</span> <span class="token punctuation">(</span>n1 <span class="token operator">&amp;&amp;</span> n1<span class="token punctuation">.</span>props<span class="token punctuation">)</span> <span class="token operator">||</span> <span class="token constant">EMPTY_OBJ</span>
+  <span class="token keyword">const</span> newProps <span class="token operator">=</span> n2<span class="token punctuation">.</span>props <span class="token operator">||</span> <span class="token constant">EMPTY_OBJ</span>
+  <span class="token comment">// 更新 props</span>
+  <span class="token function">patchProps</span><span class="token punctuation">(</span>el<span class="token punctuation">,</span> n2<span class="token punctuation">,</span> oldProps<span class="token punctuation">,</span> newProps<span class="token punctuation">,</span> parentComponent<span class="token punctuation">,</span> parentSuspense<span class="token punctuation">,</span> isSVG<span class="token punctuation">)</span>
+  <span class="token keyword">const</span> areChildrenSVG <span class="token operator">=</span> isSVG <span class="token operator">&amp;&amp;</span> n2<span class="token punctuation">.</span><span class="token keyword">type</span> <span class="token operator">!==</span> <span class="token string">'foreignObject'</span>
+  <span class="token comment">// 更新子节点</span>
+  <span class="token function">patchChildren</span><span class="token punctuation">(</span>n1<span class="token punctuation">,</span> n2<span class="token punctuation">,</span> el<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> parentComponent<span class="token punctuation">,</span> parentSuspense<span class="token punctuation">,</span> areChildrenSVG<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br></div></div></div></section> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">Last Updated: </span> <span class="time">9/21/2022, 4:45:28 PM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev"><a href="/my-front-end-learning/blogs/vue3-resource/core/3.html" class="prev">
+            Vue3组件渲染 - 核心渲染流程
+          </a></span> <!----></p></div> <div class="comments-wrapper"><!----></div> <ul class="side-bar sub-sidebar-wrapper" style="width:12rem;" data-v-70334359><li class="level-2" data-v-70334359><a href="/my-front-end-learning/blogs/vue3-resource/core/4.html#带副作用渲染函数更新组件的过程" class="sidebar-link reco-side-带副作用渲染函数更新组件的过程" data-v-70334359>带副作用渲染函数更新组件的过程</a></li><li class="level-2" data-v-70334359><a href="/my-front-end-learning/blogs/vue3-resource/core/4.html#patch更新逻辑" class="sidebar-link reco-side-patch更新逻辑" data-v-70334359>patch更新逻辑</a></li><li class="level-2" data-v-70334359><a href="/my-front-end-learning/blogs/vue3-resource/core/4.html#processcomponent" class="sidebar-link reco-side-processcomponent" data-v-70334359>processComponent</a></li><li class="level-2" data-v-70334359><a href="/my-front-end-learning/blogs/vue3-resource/core/4.html#updatecomponent" class="sidebar-link reco-side-updatecomponent" data-v-70334359>updateComponent</a></li><li class="level-2" data-v-70334359><a href="/my-front-end-learning/blogs/vue3-resource/core/4.html#update" class="sidebar-link reco-side-update" data-v-70334359>update</a></li><li class="level-2" data-v-70334359><a href="/my-front-end-learning/blogs/vue3-resource/core/4.html#processelement" class="sidebar-link reco-side-processelement" data-v-70334359>processElement</a></li></ul></main> <!----></div></div></div></div><div class="global-ui"><div class="back-to-ceiling" style="right:1rem;bottom:6rem;width:2.5rem;height:2.5rem;border-radius:.25rem;line-height:2.5rem;display:none;" data-v-c6073ba8 data-v-c6073ba8><svg t="1574745035067" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5404" class="icon" data-v-c6073ba8><path d="M526.60727968 10.90185116a27.675 27.675 0 0 0-29.21455937 0c-131.36607665 82.28402758-218.69155461 228.01873535-218.69155402 394.07834331a462.20625001 462.20625001 0 0 0 5.36959153 69.94390903c1.00431239 6.55289093-0.34802892 13.13561351-3.76865779 18.80351572-32.63518765 54.11355614-51.75690182 118.55860487-51.7569018 187.94566865a371.06718723 371.06718723 0 0 0 11.50484808 91.98906777c6.53300375 25.50556257 41.68394495 28.14064038 52.69160883 4.22606766 17.37162448-37.73630017 42.14135425-72.50938081 72.80769204-103.21549295 2.18761121 3.04276886 4.15646224 6.24463696 6.40373557 9.22774369a1871.4375 1871.4375 0 0 0 140.04691725 5.34970492 1866.36093723 1866.36093723 0 0 0 140.04691723-5.34970492c2.24727335-2.98310674 4.21612437-6.18497483 6.3937923-9.2178004 30.66633723 30.70611158 55.4360664 65.4791928 72.80769147 103.21549355 11.00766384 23.91457269 46.15860503 21.27949489 52.69160879-4.22606768a371.15156223 371.15156223 0 0 0 11.514792-91.99901164c0-69.36717486-19.13165746-133.82216804-51.75690182-187.92578088-3.42062944-5.66790279-4.76302748-12.26056868-3.76865837-18.80351632a462.20625001 462.20625001 0 0 0 5.36959269-69.943909c-0.00994388-166.08943902-87.32547796-311.81420293-218.6915546-394.09823051zM605.93803103 357.87693858a93.93749974 93.93749974 0 1 1-187.89594924 6.1e-7 93.93749974 93.93749974 0 0 1 187.89594924-6.1e-7z" p-id="5405" data-v-c6073ba8></path><path d="M429.50777625 765.63860547C429.50777625 803.39355007 466.44236686 1000.39046097 512.00932183 1000.39046097c45.56695499 0 82.4922232-197.00623328 82.5015456-234.7518555 0-37.75494459-36.9345906-68.35043303-82.4922232-68.34111062-45.57627738-0.00932239-82.52019037 30.59548842-82.51086798 68.34111062z" p-id="5406" data-v-c6073ba8></path></svg></div></div></div>
+    <script src="/my-front-end-learning/assets/js/app.07f8a982.js" defer></script><script src="/my-front-end-learning/assets/js/3.e7740265.js" defer></script><script src="/my-front-end-learning/assets/js/1.a4482675.js" defer></script><script src="/my-front-end-learning/assets/js/16.ad77a0b5.js" defer></script>
+  </body>
+</html>
