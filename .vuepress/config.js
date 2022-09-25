@@ -400,6 +400,7 @@ module.exports = {
             'core/2',
             'core/3',
             'core/4',
+            'core/5',
           ]
         }
       ],
