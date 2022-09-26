@@ -402,6 +402,13 @@ module.exports = {
             'core/4',
             'core/5',
           ]
+        },
+        {
+          title: 'Vue3Setup',
+          collapsable: false,
+          children: [
+            'compositionAPI/1'
+          ]
         }
       ],
       "/blogs/miniprogream/": [
