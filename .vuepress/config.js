@@ -407,7 +407,9 @@ module.exports = {
           title: 'Vue3Setup',
           collapsable: false,
           children: [
-            'compositionAPI/1'
+            'compositionAPI/1',
+            'compositionAPI/2',
+            'compositionAPI/3'
           ]
         }
       ],
