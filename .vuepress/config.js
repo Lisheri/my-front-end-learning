@@ -409,7 +409,9 @@ module.exports = {
           children: [
             'compositionAPI/1',
             'compositionAPI/2',
-            'compositionAPI/3'
+            'compositionAPI/3',
+            'compositionAPI/4',
+            'compositionAPI/5'
           ]
         }
       ],
