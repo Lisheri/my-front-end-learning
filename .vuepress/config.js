@@ -411,7 +411,8 @@ module.exports = {
             'compositionAPI/2',
             'compositionAPI/3',
             'compositionAPI/4',
-            'compositionAPI/5'
+            'compositionAPI/5',
+            'compositionAPI/6'
           ]
         }
       ],
