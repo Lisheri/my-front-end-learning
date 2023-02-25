@@ -12,6 +12,6 @@
   },
   "description": "gogogo",
   "dependencies": {
-    "@vuepress-reco/vuepress-plugin-comments": "^1.6.0"
+    "@vuepress-reco/vuepress-plugin-comments": "1.6.0"
   }
 }
