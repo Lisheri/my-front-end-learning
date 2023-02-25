@@ -36,6 +36,7 @@ jobs:
                   nvm install v14.17.0
                   nvm use
                   git config --global user.name Lisheri
+                  git config --global user.email "496585582@qq.com"
                   git pull
                   npm install yarn -g
                   rm -rf node_modules/
