@@ -412,7 +412,9 @@ module.exports = {
             'compositionAPI/3',
             'compositionAPI/4',
             'compositionAPI/5',
-            'compositionAPI/6'
+            'compositionAPI/6',
+            'compositionAPI/7',
+            'compositionAPI/8'
           ]
         }
       ],
