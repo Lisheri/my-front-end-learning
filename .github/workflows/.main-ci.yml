@@ -21,7 +21,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
           matrix:
-            node-version: "14.17.0"
+            node-version: ["14.17.0"]
         # Steps represent a sequence of tasks that will be executed as part of the job
         steps:
             # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -29,6 +29,9 @@ jobs:
             # Runs a set of commands using the runners shell
             - name: Run build script
               run: |
+                  $ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh | bash
+                  nvm install v14.17.0
+                  nvm use
                   git config --global user.name Lisheri
                   git pull
                   npm install yarn -g
