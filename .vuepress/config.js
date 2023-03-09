@@ -425,6 +425,25 @@ module.exports = {
           children: [
             "base/1"
           ]
+        },
+        {
+          title: 'mini-react实现',
+          collapsable: false,
+          children: [
+            'source/1'
+          ]
+        }
+      ],
+      "/blogs/nestjs/": [
+        {
+          title: 'nestjs基础',
+          collapsable: false,
+          children: [
+            "base/1",
+            "base/2",
+            "base/3",
+            "base/4"
+          ]
         }
       ],
       "/blogs/miniprogream/": [
